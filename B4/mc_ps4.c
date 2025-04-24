@@ -5,8 +5,8 @@
 
 #define Natom 40
 #define Nsim 30001
-#define T 1e-7
-#define p 1e-7
+#define T 0.5e1
+#define p 1e1
 #define PI 3.145926
 double L = 10.0;
 double Lf = 10.0;
@@ -85,8 +85,8 @@ void MC_move(double x[Natom], double y[Natom], double z[Natom], int idx) {
 
 
 int main(void){
-    int seed[3] = {42,0xC0FFEE,12};
-    srand(seed[2]);
+    //int seed[3] = {42,0xC0FFEE,12};
+    srand(time(NULL));
     double x[Natom] = {0};
     double y[Natom] = {0};
     double z[Natom] = {0};
@@ -95,10 +95,12 @@ int main(void){
 
     printf("init energy of config: %.2e\n", config_NRG(x, y, z));
     //printf("seed: %d\n", 0xC0FFEE);
-    FILE *positions = fopen("positionsT10seed12.csv", "w");
-    fprintf(positions, "STEP,X,Y,Z\n");
-    //FILE *energies = fopen("energiesT10seed12.csv", "w");
-    //fprintf(energies, "STEP,E\n");
+    //FILE *positions = fopen("positionsT10seed12.csv", "w");
+    //fprintf(positions, "STEP,X,Y,Z\n");
+    FILE *volumes = fopen("volumesT05e1p1e1.csv", "w");
+    fprintf(volumes, "STEP,V\n");
+    FILE *energies = fopen("energiesT05e1p1e1.csv", "w");
+    fprintf(energies, "STEP,E\n");
 
     for(int i = 0; i < Nsim; i++){
         int idx = Natom*(double)rand()/RAND_MAX;
@@ -122,15 +124,18 @@ int main(void){
         
 
         if(i%1000 == 0){
-            //fprintf(energies, "%d,%.4f\n", i, config_NRG(x,y,z));
-            for(size_t i = 0; i < Natom; i++){
+            fprintf(energies, "%d,%.4f\n", i, config_NRG(x,y,z));
+            fprintf(volumes, "%d,%.4f\n", i, L*L*L);
+            /*for(size_t i = 0; i < Natom; i++){
                 fprintf(positions,"%zu,%.4f,%.4f,%.4f\n",i,x[i],y[i],z[i]);
-            }
+            }*/
             printf("L is now: %.4f\n", L);
         }
     }
-    fclose(positions);
-    //fclose(energies);
+    //fclose(positions);
+    
+    fclose(energies);
+    fclose(volumes);
 
     return EXIT_SUCCESS;
 }

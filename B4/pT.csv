@@ -1,0 +1,11 @@
+p,T,STATE
+1e-7,1e-7,solid,
+1e-7,1e7,gas
+1e7,1e7,liquid
+1e4,1e7,gas
+1e4,1e4,gas
+1e2,1e4,liquid
+1e2,1e2,liquid
+1e1,1e2,liquid
+1e1,1e1,liquid
+0.5e1,1e1,liquid
